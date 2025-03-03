@@ -120,3 +120,53 @@ def logout():
     """User logout"""
     logout_user()
     return redirect(url_for("main.index"))
+
+
+# Plant routes
+@plants_bp.route("/")
+@login_required
+def list():
+    """List all plants"""
+    plants = current_user.plants.all()
+    return render_template("plants/list.html", plants=plants)
+
+
+@plants_bp.route("<int:id>")
+@login_required
+def detail(id):
+    """Show plant details"""
+    plant = Plant.query.get_or_404(id)
+    # Check if the plant belongs to the current user
+    if plant.user_id != current_user.id:
+        flash("You do not have permission to view this plant.", "danger")
+        return redirect(url_for("plants.list"))
+
+    care_logs = plant.care_logs.order_by(CareLog.timestamp.desc()).all()
+    return render_template("plants/detail.html", plant=plant, care_logs=care_logs)
+
+
+@plants_bp.route("/new", methods=["GET", "POST"])
+@login_required
+def new():
+    """Add a new plant"""
+    form = PlantForm()
+    if form.validate_on_submit():
+        plant = Plant(
+            name=form.name.data,
+            species=form.species.data,
+            location=form.location.data,
+            watering_frequency=form.watering_frequency.data,
+            notes=form.notes.data,
+            owner=current_user,
+        )
+        db.session.add(plant)
+        db.session.commit()
+
+        # Handle image upload if provided
+        if form.image.data:
+            save_plant_image(plant, form.image.data, is_primary=True)
+
+        flash("Plant addad successfully!", "success")
+        return redirect(url_for("plants.detail", id=plant.id))
+
+    return render_template("plants/form.html", form=form, title="Add New Plant")
