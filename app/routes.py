@@ -170,3 +170,76 @@ def new():
         return redirect(url_for("plants.detail", id=plant.id))
 
     return render_template("plants/form.html", form=form, title="Add New Plant")
+
+
+@plants_bp.route("/<int:id>/edit", methods=["GET", "POST"])
+@login_required
+def edit(id):
+    """Edit an existing plant"""
+    plant = Plant.query.get_or_404(id)
+    # Verify ownership
+    if plant.user_id != current_user.id:
+        flash("You do not have permission to edit this plant.", "danger")
+        return redirect(url_for("plants.list"))
+
+    form = PlantForm(obj=plant)
+    if form.validate_on_submit():
+        form.populate_obj(plant)  # Update plant with form data
+        db.session.commit()
+
+        # Handle image upload if provided
+        if form.image.data:
+            save_plant_image(plant, form.image.data)
+
+        flash("Plant updated successfully!", "success")
+        return redirect(url_for("plants.detail", id=plant.id))
+
+    return render_template("plants/form.html", form=form, title="Edit Plant")
+
+
+@plants_bp.route("<int:id>/care", methods=["GET", "POST"])
+@login_required
+def add_care(id):
+    """Record care for a plant"""
+    plant = Plant.query.get_or_404(id)
+    # Verify ownership
+    if plant.user_id != current_user.id:
+        flash("You do not have permission to record care for this plant.", "danger")
+        return redirect(url_for("plants.list"))
+
+    form = CareLogForm()
+    if form.validate_on_submit():
+        care_log = CareLog(
+            care_type=form.care_type.data, notes=form.notes.data, plant=plant
+        )
+
+        # Update last_watered if this is a watering event
+        if form.care_type.data == "watering":
+            plant.last_watered = datetime.utcnow()
+
+        # Update last_fertilized if this is a fertilizing event
+        if form.care_type.data == "fertilizing":
+            plant.last_fertilized = datetime.utcnow()
+
+        db.session.add(care_log)
+        db.session.commit()
+        flash("Care recorded successfully!", "success")
+        return redirect(url_for("plants.detail", id=plant.id))
+
+    return render_template("plants/care_form.html", form=form, plant=plant)
+
+
+@plants_bp.route("/<int:id>/delete", methods=["POST"])
+@login_required
+def delete(id):
+    """Delete a plant"""
+    plant = Plant.query.get_or_404(id)
+    # Verify ownership
+    if plant.user_id != current_user.id:
+        flash("You do not have permission to delete this plant.", "danger")
+        return redirect(url_for("plants.list"))
+
+    db.session.delete(plant)
+    db.session.commit()
+    flash("Plant deleted successfully!", "success")
+    return redirect(url_for("plants.list"))
