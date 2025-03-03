@@ -38,3 +38,20 @@ class RegistrationForm(FlaskForm):
         "Confirm Password", validators=[DataRequired(), EqualTo("password")]
     )
     submit = SubmitField("Register")
+
+
+class PlantForm(FlaskForm):
+    """Form for adding/editing plants"""
+
+    name = StringField("Plant Name", validators=[DataRequired(), Length(max=64)])
+    species = StringField("Species", validators=[Length(max=120)])
+    location = StringField("Location", validators=[Length(max=120)])
+    watering_frequency = IntegerField(
+        "Days Between Watering", validators=[DataRequired(), NumberRange(min=1, max=90)]
+    )
+    notes = TextAreaField("Notes", validators=[Optional()])
+    image = FileField(
+        "Plant Image",
+        validators=[Optional(), FileAllowed(["jpg", "jpeg", "png"], "Images only!")],
+    )
+    submit = SubmitField("Save Plant")
