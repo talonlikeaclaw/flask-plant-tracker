@@ -51,3 +51,16 @@ class Plant(db.Model):
             return True
         days_since = (datetime.utcnow() - self.last_watered).days
         return days_since >= self.watering_frequency
+
+
+class CareLog(db.Model):
+    """Represents a Care Log object"""
+
+    id = db.Column(db.Integer, primary_key=True)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    care_type = db.Column(db.String(20))
+    notes = db.Column(db.Text, nullable=True)
+    plant_id = db.Column(db.Integer, db.ForeignKey("plant.id"))
+
+    def __repr__(self):
+        return f"<CareLog {self.care_type} for Plant {self.plant_id}>"
