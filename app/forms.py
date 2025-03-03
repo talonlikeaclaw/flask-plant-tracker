@@ -55,3 +55,21 @@ class PlantForm(FlaskForm):
         validators=[Optional(), FileAllowed(["jpg", "jpeg", "png"], "Images only!")],
     )
     submit = SubmitField("Save Plant")
+
+
+class CareLogForm(FlaskForm):
+    """Form for recording plant care tasks"""
+
+    care_type = SelectField(
+        "Care Type",
+        choices=[
+            ("watering", "Watering"),
+            ("fertilizing", "Fertilizing"),
+            ("repotting", "Repotting"),
+            ("pruning", "Pruning"),
+            ("other", "Other"),
+        ],
+        validators=[DataRequired()],
+    )
+    notes = TextAreaField("Notes", validators=[Optional()])
+    submit = SubmitField("Record Care")
