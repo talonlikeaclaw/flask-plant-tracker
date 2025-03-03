@@ -1,0 +1,18 @@
+{% extends "base.html" %)
+
+{% block title %}Welcome to Plant Tracker{% endblock %}
+
+{% block content %}
+<section>
+  <h1>Welcome to Plant Tracker</h1>
+  <p>Keep track of your plants and never forget to water them again!</p>
+  <hr>
+  <section>
+    {% if current_user.is_authenticated %}
+    <a href="{{ url_for('main.dashboard') }}">Go to Dashboard</a>
+    {% else %}
+      <a href="{{ url_for('auth.register') }}">Sign Up</a>
+      <a href="{{ url_for('auth.login') }}">Login</a>
+    {% endif %}
+  </section>
+</section>
