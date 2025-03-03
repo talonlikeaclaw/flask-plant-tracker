@@ -8,7 +8,9 @@ from config import Config
 db = SQLAlchemy()
 migrate = Migrate()
 login_manager = LoginManager()
-login_manager.login_view = 'auth.login'
+login_manager.login_view = "auth.login"
+login_manager.login_message_category = "info"
+
 
 def create_app(config_class=Config):
     # Create and configure the app
@@ -21,7 +23,19 @@ def create_app(config_class=Config):
     login_manager.init_app(app)
 
     # Register blueprints
-    from app.routes import main_bp
+    from app.routes import main_bp, auth_bp, plants_bp
+
     app.register_blueprint(main_bp)
+    app.register_blueprint(auth_bp)
+    app.register_blueprint(plants_bp)
+
+    import os
+
+    os.makedirs(
+        os.path.join(app.root_path, "static", "uploads", "plants"), exist_ok=True
+    )
 
     return app
+
+
+from app import models
