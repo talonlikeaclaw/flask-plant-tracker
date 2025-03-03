@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}My Plants{% endblock %}
+
+{% block context %}
+<section>
+  <h2>My Plants</h2>
+  <a href="{{ url_for('plants.new') }}">Add New Plant</a>
+</section>
+
+{% if plants %}
+<section>
+  {% for plant in plants %}
+    <section>
+      <h5>{{ plant.name }}</h5>
+      <p>{{ plant.species }}</p>
+      <h6>Location:</h6>
+      <p>{{ plant.location }}</p>
+      <h6>Water every:</h6>
+      <p>{{ plant.watering_frequency }} days</p>
+      {% if plant.needs_water %}
+      <p>Needs water!</p>
+      {% else %}
+      <p>Watered recently</p>
+      {% endif %}
+      <a href="{{ url_for('plant.detail', id=plant.id) }}">View Details</a>
+  </section> 
+  {% endfor %}
+</section>
+{% else %}
+<section>
+  <h3>No plants yet!</h3>
+  <p>Get started by adding your first plant.</p>
+  <a href="{{ url_for('plants.new') }}">Add Your First Plant!</a>
+</section>
+{% endif %}
+{% endblock %}
