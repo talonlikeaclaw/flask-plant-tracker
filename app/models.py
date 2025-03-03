@@ -9,7 +9,7 @@ class User(UserMixin, db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), unique=True, index=True)
-    email = db.Column(db.String(120), unique=True)
+    email = db.Column(db.String(120), unique=True, index=True)
     password_hash = db.Column(db.String(128))
     plants = db.relationship("Plant", backref="owner", lazy="dynamic")
 
@@ -38,19 +38,34 @@ class Plant(db.Model):
     location = db.Column(db.String(120))
     watering_frequency = db.Column(db.Integer)
     last_watered = db.Column(db.DateTime, nullable=True)
+    last_fertilized = db.Column(db.DateTime, nullable=True)
     notes = db.Column(db.Text, nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
-    care_logs = db.relationship("CareLog", backref="plant", lazy="dynamic")
+    care_logs = db.relationship(
+        "CareLog", backref="plant", lazy="dynamic", cascade="all, delete-orphan"
+    )
+    images = db.relationship(
+        "PlantImage", backref="plant", lazy="dynamic", cascade="all, delete-orphan"
+    )
 
     def __repr__(self):
         return f"<Plant {self.name}>"
 
+    @property
     def needs_water(self):
         """Checks if plant needs watering based on frequency"""
         if not self.last_watered:
             return True
         days_since = (datetime.utcnow() - self.last_watered).days
         return days_since >= self.watering_frequency
+
+
+class PlantImage(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    filename = db.Column(db.String(255), nullable=False)
+    plant_id = db.Column(db.Integer, db.ForeignKey("plant.id"))
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    is_primary = db.Column(db.Boolean, default=False)
 
 
 class CareLog(db.Model):
