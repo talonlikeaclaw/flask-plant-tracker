@@ -46,3 +46,29 @@ def save_plant_image(plant, image_file, is_primary=False):
     db.session.add(image)
     db.session.commit()
     return image
+
+
+# Main routes
+@main_bp.route("/")
+def index():
+    """Home page"""
+    if current_user.is_authenticated:
+        return redirect(url_for("plants.list"))
+    return render_template("index.html")
+
+
+@main_bp.route("/dashboard")
+@login_required
+def dashboard():
+    """User dashboard with overview of plants needing care"""
+    plants_need_water = current_user.plants.filter(Plant.needs_water == True).all()
+    recent_care = (
+        CareLog.query.join(Plant)
+        .filter(Plant.user_id == current_user.id)
+        .order_by(CareLog.timestamp.desc())
+        .limit(5)
+        .all()
+    )
+    return render_template(
+        "dashboard.html", plants_need_water=plants_need_water, recent_care=recent_care
+    )
