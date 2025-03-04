@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Record Care for {{ plant.name }}{% endblock %}
+
+{% block content %}
+<section>
+  <h2>Record Care for {{ plant.name }}</h2>
+  <form method="POST" novalidate>
+    {{ form.hidden_tag() }}
+
+    {{ form.care_type.label(class="form-label") }}
+    {{ form.care_type(class="form-input") }}
+    {{ form.notes.label(class="form-label") }}
+    {{ form.notes(class="form-input") }}
+    {{ form.submit(class="form-btn") }}
+  </form>
+</section>
+{% endblock %}
