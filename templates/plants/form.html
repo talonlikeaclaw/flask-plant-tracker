@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<section>
+  <h2>{{ title  }}</h2>
+
+  <section>
+    <form method="POST">
+      {{ form.hidden_tag() }}
+
+      {{ form.name.label(class="form-label") }}
+      {{ form.name(class="form-input") }}
+      {{ form.species.label(class="form-label") }}
+      {{ form.species(class="form-input") }}
+      {{ form.location.label(class="form-label") }}
+      {{ form.location(class="form-input") }}
+      {{ form.watering_frequency.label(class="form-label") }}
+      {{ form.watering_frequency(class="form-input") }}
+      {{ form.notes.label(class="form-label") }}
+      {{ form.notes(class="form-input") }}
+      {{ form.image.label(class="form-label") }}
+      {{ form.image(class="form-input") }}
+      {{ form.submit(class="form-btm") }}
+    </form>
+  </section>
+</section>
+{% endblock %}
