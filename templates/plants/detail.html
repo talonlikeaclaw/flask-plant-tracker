@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}{{ plant.name }}{% endblock %}
+
+{% block content %}
+<section>
+  <h2>{{ plant.name }}</h2>
+  <div>
+    <a href="{{ url_for('plants.edit', id=plant.id) }}">Edit</a>
+    <a href="{{ url_for('plants.delete, id=plant.id) }}">Delete</a>
+  </div>
+</section>
+<section>
+  <h6>Species:</h6>
+  <p>{{ plant.species }}</p>
+  <h6>Date Acquired:</h6>
+  <p>{{ plant.date_acquired.strftime('%B %d, %Y') }}</p>
+  <h6>Location:</h6>
+  <p>{{ plant.locaton }}</p>
+  <h6>Watering Frequency:</h6>
+  <p>Every {{ plant.watering_frequency }} days</p>
+  <h6>Last Watered:</h6>
+  {% if plant.last_watered %}
+    <p>{{ plant.last_watered.strftime('%B %d, %Y') }}
+    {{ (now - plant.last_watered).days }} days ago
+    </p>
+  {% else %}
+    <p>Not recorded</p>
+  {% endif %}
+  <h6>Last Fertilized:</h6>
+  {% if plant.last_fertilized %}
+    <p>{{ plant.last_fertilized.strftime('%B %d, %Y') }}
+    {{ (now - plant.last_fertilized).days }} days ago
+    </p>
+  {% else %}
+    <p>Not recorded</p>
+  {% endif %}
+
+  {% if plant.notes %}
+  <section>
+    <h6>Notes:</h6>
+    <p>{{ plant.notes|nl2br }}</p>
+  </section>
+  {% endif %}
+
+  <section>
+    <a href="{{ url_for('plants.add_care', id=plant.id) }}">Record Care</a>
+    {% if plant.needs_water %}
+      <p>This plant needs water!</p>
+    {% endif %}
+  </section>
+</section>
+{% endblock %}
