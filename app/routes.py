@@ -70,7 +70,10 @@ def dashboard():
         .all()
     )
     return render_template(
-        "dashboard.html", plants_need_water=plants_need_water, recent_care=recent_care
+        "dashboard.html",
+        plants_need_water=plants_need_water,
+        recent_care=recent_care,
+        now=datetime.utcnow(),
     )
 
 
@@ -142,7 +145,9 @@ def detail(id):
         return redirect(url_for("plants.list"))
 
     care_logs = plant.care_logs.order_by(CareLog.timestamp.desc()).all()
-    return render_template("plants/detail.html", plant=plant, care_logs=care_logs)
+    return render_template(
+        "plants/detail.html", plant=plant, care_logs=care_logs, now=datetime.utcnow()
+    )
 
 
 @plants_bp.route("/new", methods=["GET", "POST"])
@@ -166,7 +171,7 @@ def new():
         if form.image.data:
             save_plant_image(plant, form.image.data, is_primary=True)
 
-        flash("Plant addad successfully!", "success")
+        flash("Plant added successfully!", "success")
         return redirect(url_for("plants.detail", id=plant.id))
 
     return render_template("plants/form.html", form=form, title="Add New Plant")

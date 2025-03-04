@@ -28,7 +28,7 @@
         </td>
         <td>
           {% if plant.last_watered %}
-            {{ plant.last_watered.strftime('%b %d') }}
+            {{ plant.last_watered.strftime('%%b %%d') }}
             ({{ (now - plant.last_watered).days }} days ago)
           {% else %}
             Never

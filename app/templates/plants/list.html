@@ -2,7 +2,7 @@
 
 {% block title %}My Plants{% endblock %}
 
-{% block context %}
+{% block content %}
 <section>
   <h2>My Plants</h2>
   <a href="{{ url_for('plants.new') }}">Add New Plant</a>
@@ -23,7 +23,7 @@
       {% else %}
       <p>Watered recently</p>
       {% endif %}
-      <a href="{{ url_for('plant.detail', id=plant.id) }}">View Details</a>
+      <a href="{{ url_for('plants.detail', id=plant.id) }}">View Details</a>
   </section> 
   {% endfor %}
 </section>
