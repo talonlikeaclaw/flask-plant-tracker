@@ -4,10 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{% block title %}Plant Tracker{% endblock %}</title>
-    <link
-      href="{{url_for('static', filename='styles/page.css')}}"
-      rel="stylesheet"
-    />
+    <link href="{{ url_for('static', filename='styles/page.css') }}" rel="stylesheet" />
   </head>
   <body>
     <nav>
