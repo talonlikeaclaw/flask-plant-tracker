@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<h1>Dashboard</h1>
+<section>
+  <h3>Plants Needing Water</h3>
+  {% if plants_need_water %}
+  <table>
+    <thead>
+      <tr>
+        <th></th>
+        <th>Name</th>
+        <th>Last Watered</th>
+        <th>Location</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for plant in plants_need_water %}
+      <tr>
+        <td>
+          Image
+        </td>
+        <td>
+          {{ plant.name }}
+        </td>
+        <td>
+          {% if plant.last_watered %}
+            {{ plant.last_watered.strftime('%b %d') }}
+            ({{ (now - plant.last_watered).days }} days ago)
+          {% else %}
+            Never
+          {% endif %}
+        </td>
+        <td>
+          {{ plant.location }}
+        </td>
+        <td>
+          <a href="{{ url_for('plants.detail', id=plant.id) }}">View</a>
+          <a href="{{ url_for('plants.add_care', id=plant.id) }}">Add Care</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}
