@@ -7,3 +7,34 @@ main {
   display:flex;
   flex-direction: column;
 }
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+nav > ul {
+  display: flex;
+  justify-content: space-between;
+  list-style: none;
+}
+
+nav a {
+  margin: 0.2em;
+  padding: 0.2em;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+ label {
+  margin: 0.2em;
+  padding: 0.2em;
+}
+
+input {
+  margin: 0.2em;
+  padding: 0.2em;
+}
