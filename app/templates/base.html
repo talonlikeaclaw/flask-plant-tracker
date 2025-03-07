@@ -1,48 +1,55 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{% block title %}Plant Tracker{% endblock %}</title>
-    <link href="{{ url_for('static', filename='styles/page.css') }}" rel="stylesheet" />
-  </head>
-  <body>
-    <nav>
-      <a class="project-title" href="{{ url_for('main.index') }}">Plant Tracker</a>
-      <ul>
-        {% if current_user.is_authenticated %}
-        <li class="nav-item">
-          <a href="{{ url_for('main.dashboard') }}" class="nav-link">Dashboard</a>
-        </li>
-        <li class="nav-item">
-          <a href="{{ url_for('plants.list') }}" class="nav-link">My Plants</a>
-        </li>
-        <li class="nav-item">
-          <a href="{{ url_for('plants.new') }}" class="nav-link">Add Plant</a>
-        </li>
-        {% endif %}
-      </ul>
-      <ul>
-        {% if current_user.is_authenticated %}
-        <li class="nav-item">Hello, {{ current_user.username }}</li>
-        <li class="nav-item">
-          <a href="{{ url_for('auth.logout') }}">Logout</a>
-        </li>
-        {% else %}
-        <li class="nav-item">
-          <a href="{{ url_for('auth.login') }}" class="nav-link">Login</a>
-        </li>
-        <li class="nav-item">
-          <a href="{{ url_for('auth.register') }}" class="nav-link">Register</a>
-        </li>
-        {% endif %}
-      </ul>
-    </nav>
-    <section id="flashed-messages">
-      {% for msg in get_flashed_messages() %}
-      <p>{{ msg }}</p>
-      {% endfor %}
-    </section>
-    {% block content %}{% endblock %}
-  </body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>
+            {% block title %}Plant Tracker{% endblock %}
+        </title>
+        <link href="{{ url_for('static', filename='styles/page.css') }}"
+              rel="stylesheet" />
+    </head>
+    <body>
+        <header>
+            <nav class="navbar">
+                <a class="project-title" href="{{ url_for("main.index") }}">Plant Tracker</a>
+                <div class="nav-links">
+                    <ul class="left-links">
+                        {% if current_user.is_authenticated %}
+                            <li>
+                                <a href="{{ url_for("main.dashboard") }}" class="nav-link">Dashboard</a>
+                            </li>
+                            <li>
+                                <a href="{{ url_for("plants.list") }}" class="nav-link">My Plants</a>
+                            </li>
+                            <li>
+                                <a href="{{ url_for("plants.new") }}" class="nav-link">Add Plant</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                    <ul class="right-links">
+                        {% if current_user.is_authenticated %}
+                            <li class="username">Hello, {{ current_user.username }}</li>
+                            <li>
+                                <a href="{{ url_for("auth.logout") }}">Logout</a>
+                            </li>
+                        {% else %}
+                            <li>
+                                <a href="{{ url_for("auth.login") }}" class="nav-link">Login</a>
+                            </li>
+                            <li>
+                                <a href="{{ url_for("auth.register") }}" class="nav-link">Register</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <section id="flashed-messages">
+            {% for msg in get_flashed_messages() %}<div class="flash-message">{{ msg }}</div>{% endfor %}
+        </section>
+        <main>
+            {% block content %}{% endblock %}
+        </main>
+    </body>
 </html>
