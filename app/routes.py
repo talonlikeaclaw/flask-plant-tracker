@@ -151,6 +151,7 @@ def detail(id):
         plant=plant,
         care_logs=care_logs,
         now=datetime.now(timezone.utc),
+        timezone=timezone,
     )
 
 

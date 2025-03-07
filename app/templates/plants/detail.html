@@ -16,7 +16,7 @@
   <h6>Species:</h6>
   <p>{{ plant.species }}</p>
   <h6>Date Acquired:</h6>
-  <p>{{ plant.date_acquired.strftime('%%B %d, %Y') }}</p>
+  <p>{{ plant.date_acquired.strftime('%B %d, %Y') }}</p>
   <h6>Location:</h6>
   <p>{{ plant.location }}</p>
   <h6>Watering Frequency:</h6>
@@ -24,7 +24,7 @@
   <h6>Last Watered:</h6>
   {% if plant.last_watered %}
     <p>{{ plant.last_watered.strftime('%B %d, %Y') }}
-    {{ (now - plant.last_watered).days }} days ago
+    {{ (now - plant.last_watered.astimezone(timezone.utc)).days }} days ago
     </p>
   {% else %}
     <p>Not recorded</p>
@@ -32,7 +32,7 @@
   <h6>Last Fertilized:</h6>
   {% if plant.last_fertilized %}
     <p>{{ plant.last_fertilized.strftime('%B %d, %Y') }}
-    {{ (now - plant.last_fertilized).days }} days ago
+    {{ (now - plant.last_fertilized.astimezone(timezone.utc)).days }} days ago
     </p>
   {% else %}
     <p>Not recorded</p>

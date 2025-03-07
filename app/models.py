@@ -37,8 +37,8 @@ class Plant(db.Model):
     date_acquired = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     location = db.Column(db.String(120))
     watering_frequency = db.Column(db.Integer)
-    last_watered = db.Column(db.DateTime, nullable=True)
-    last_fertilized = db.Column(db.DateTime, nullable=True)
+    last_watered = db.Column(db.DateTime(timezone=True), nullable=True)
+    last_fertilized = db.Column(db.DateTime(timezone=True), nullable=True)
     notes = db.Column(db.Text, nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
     care_logs = db.relationship(
