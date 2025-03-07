@@ -9,20 +9,33 @@
 </section>
 
 {% if plants %}
-<section>
+<section id="plant-list">
   {% for plant in plants %}
-    <section>
-      <h5>{{ plant.name }}</h5>
-      <p>{{ plant.species }}</p>
-      <h6>Location:</h6>
-      <p>{{ plant.location }}</p>
-      <h6>Water every:</h6>
-      <p>{{ plant.watering_frequency }} days</p>
-      {% if plant.needs_water %}
-      <p>Needs water!</p>
-      {% else %}
-      <p>Watered recently</p>
-      {% endif %}
+    <section class="plant-details">
+      <div>
+        <p>Name:</p>
+        <p>{{ plant.name }}</p>
+      </div>
+      <div>
+        <p>Species:</p>
+        <p>{{ plant.species }}</p>
+      </div>
+      <div>
+        <p>Location:</p>
+        <p>{{ plant.location }}</p>
+      </div>
+      <div>
+        <p>Water every:</p>
+        <p>{{ plant.watering_frequency }} days</p>
+      </div>
+      <div>
+        <p>Water:</p>
+        {% if plant.needs_water %}
+          <p>Needs water!</p>
+        {% else %}
+        <p>Watered recently</p>
+        {% endif %}
+      </div>
       <a href="{{ url_for('plants.detail', id=plant.id) }}">View Details</a>
   </section> 
   {% endfor %}
