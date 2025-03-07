@@ -1,5 +1,5 @@
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 from flask import (
     Blueprint,
     render_template,
@@ -25,7 +25,7 @@ def save_plant_image(plant, image_file, is_primary=False):
     """Save a plant image file to the filesystem and database"""
     # Get a secure filename and add timestamp to avoid duplicates
     filename = secure_filename(image_file.filename)
-    timestamp = datetime.utcnow().strftime("%Y%m%d%H%M%S")
+    timestamp = datetime.now(timezone.utc).strftime("%Y%m%d%H%M%S")
     filename = f"{timestamp}_{filename}"
 
     # Create upload path if it doesn't exist yet
@@ -53,7 +53,7 @@ def save_plant_image(plant, image_file, is_primary=False):
 def index():
     """Home page"""
     if current_user.is_authenticated:
-        return redirect(url_for("plants.list"))
+        return redirect(url_for("main.dashboard"))
     return render_template("index.html")
 
 
@@ -61,7 +61,8 @@ def index():
 @login_required
 def dashboard():
     """User dashboard with overview of plants needing care"""
-    plants_need_water = current_user.plants.filter(Plant.needs_water == True).all()
+    all_plants = current_user.plants.all()
+    plants_need_water = [plant for plant in all_plants if plant.needs_water]
     recent_care = (
         CareLog.query.join(Plant)
         .filter(Plant.user_id == current_user.id)
@@ -73,7 +74,7 @@ def dashboard():
         "dashboard.html",
         plants_need_water=plants_need_water,
         recent_care=recent_care,
-        now=datetime.utcnow(),
+        now=datetime.now(timezone.utc),
     )
 
 
@@ -146,7 +147,10 @@ def detail(id):
 
     care_logs = plant.care_logs.order_by(CareLog.timestamp.desc()).all()
     return render_template(
-        "plants/detail.html", plant=plant, care_logs=care_logs, now=datetime.utcnow()
+        "plants/detail.html",
+        plant=plant,
+        care_logs=care_logs,
+        now=datetime.now(timezone.utc),
     )
 
 
@@ -220,11 +224,11 @@ def add_care(id):
 
         # Update last_watered if this is a watering event
         if form.care_type.data == "watering":
-            plant.last_watered = datetime.utcnow()
+            plant.last_watered = datetime.now(timezone.utc)
 
         # Update last_fertilized if this is a fertilizing event
         if form.care_type.data == "fertilizing":
-            plant.last_fertilized = datetime.utcnow()
+            plant.last_fertilized = datetime.now(timezone.utc)
 
         db.session.add(care_log)
         db.session.commit()
