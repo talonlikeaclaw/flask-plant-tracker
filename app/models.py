@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from app import db, login_manager
@@ -34,7 +34,7 @@ class Plant(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), index=True)
     species = db.Column(db.String(120))
-    date_acquired = db.Column(db.DateTime, default=datetime.utcnow)
+    date_acquired = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     location = db.Column(db.String(120))
     watering_frequency = db.Column(db.Integer)
     last_watered = db.Column(db.DateTime, nullable=True)
@@ -56,7 +56,9 @@ class Plant(db.Model):
         """Checks if plant needs watering based on frequency"""
         if not self.last_watered:
             return True
-        days_since = (datetime.utcnow() - self.last_watered).days
+        days_since = (
+            datetime.now(timezone.utc) - self.last_watered.replace(tzinfo=timezone.utc)
+        ).days
         return days_since >= self.watering_frequency
 
 
@@ -64,7 +66,7 @@ class PlantImage(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     filename = db.Column(db.String(255), nullable=False)
     plant_id = db.Column(db.Integer, db.ForeignKey("plant.id"))
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    timestamp = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     is_primary = db.Column(db.Boolean, default=False)
 
 
@@ -72,7 +74,7 @@ class CareLog(db.Model):
     """Represents a Care Log object"""
 
     id = db.Column(db.Integer, primary_key=True)
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    timestamp = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     care_type = db.Column(db.String(20))
     notes = db.Column(db.Text, nullable=True)
     plant_id = db.Column(db.Integer, db.ForeignKey("plant.id"))
