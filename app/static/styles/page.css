@@ -113,6 +113,87 @@ p {
   text-align: center;
 }
 
+/* Dashboard */
+.dashboard-heading {
+  text-align: center;
+  padding: 1rem;
+}
+
+.dashboard-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 90%;
+  margin: 0 auto;
+  padding: 20px;
+  background: #dedbd2;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 5px;
+}
+
+.dashboard-table th,
+.dashboard-table td {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+}
+
+.dashboard-table th {
+  background: #f4f4f4;
+  font-weight: bold;
+}
+
+.dashboard-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.plant-image img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.plant-image span {
+  color: #777;
+  font-size: 14px;
+}
+
+.dashboard-actions a {
+  display: inline-block;
+  padding: 6px 12px;
+  margin: 2px;
+  font-size: 14px;
+  text-decoration: none;
+  border-radius: 4px;
+}
+
+.dashboard-actions a:first-of-type {
+  background: #0b3948;
+  color: white;
+}
+
+.dashboard-actions a:last-of-type {
+  background: #416165;
+  color: white;
+}
+
+.dashboard-actions a:hover {
+  opacity: 0.8;
+}
+
+.never-watered {
+  color: #ff4444;
+  font-weight: bold;
+}
+
 /* Forms */
 fieldset {
   display: flex;
