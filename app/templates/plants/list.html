@@ -30,8 +30,8 @@
                                 <p class="watered">Watered recently</p>
                             {% endif %}
                         </p>
+                        <a href="{{ url_for('plants.detail', id=plant.id) }}" class="view-btn">View Details</a>
                     </div>
-                    <a href="{{ url_for('plants.detail', id=plant.id) }}" class="view-btw">View Details</a>
                 </div>
             {% endfor %}
         </section>
