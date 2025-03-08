@@ -2,7 +2,7 @@
 {% block title %}My Plants{% endblock %}
 {% block content %}
     <section class="plant-header">
-        <h2>My Plants</h2>
+        <h1 class="plants-heading">My Plants</h1>
         <div class="plant-actions">
             <a href="{{ url_for("plants.new") }}" class="add-plant-btn">Add New Plant</a>
         </div>
@@ -22,16 +22,20 @@
                         <p>
                             <strong>Water every:</strong> {{ plant.watering_frequency }} days
                         </p>
-                        <p>
-                            <strong>Water Status:</strong>
-                            {% if plant.needs_water %}
-                                <p class="needs-water">Needs water!</p>
-                            {% else %}
-                                <p class="watered">Watered recently</p>
-                            {% endif %}
-                        </p>
+                        {% if plant.needs_water %}
+                            <p>
+                                <strong>Water Status:</strong>
+                                Needs water!
+                            </p>
+                        {% else %}
+                            <p>
+                                <strong>Water Status:</strong>
+                                Watered recently
+                            </p>
+                        {% endif %}
+                        <a href="{{ url_for('plants.add_care', id=plant.id) }}" class="view-btn">Record Care</a>
+                        <a href="{{ url_for('plants.detail', id=plant.id) }}" class="view-btn">View Details</a>
                     </div>
-                    <a href="{{ url_for('plants.detail', id=plant.id) }}" class="view-btw">View Details</a>
                 </div>
             {% endfor %}
         </section>

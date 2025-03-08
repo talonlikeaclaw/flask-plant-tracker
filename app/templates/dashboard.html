@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Dashboard{% endblock %}
 {% block content %}
-    <h1>Dashboard</h1>
+    <h1 class="dashboard-heading">Dashboard</h1>
     <section class="dashboard-section">
         <h3>Plants Needing Water</h3>
         {% if plants_need_water %}
@@ -32,11 +32,11 @@
                                     {{ plant.last_watered.strftime("%b %d") }}
                                     ({{ (now - plant.last_watered).days }} days ago)
                                 {% else %}
-                                    <span class="never-water">Never</span>
+                                    <span class="never-watered">Never</span>
                                 {% endif %}
                             </td>
                             <td>{{ plant.location }}</td>
-                            <td class="actions">
+                            <td class="dashboard-actions">
                                 <a href="{{ url_for('plants.detail', id=plant.id) }}">View</a>
                                 <a href="{{ url_for('plants.add_care', id=plant.id) }}">Add Care</a>
                             </td>
