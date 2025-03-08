@@ -33,6 +33,7 @@
                                 Watered recently
                             </p>
                         {% endif %}
+                        <a href="{{ url_for('plants.add_care', id=plant.id) }}" class="view-btn">Record Care</a>
                         <a href="{{ url_for('plants.detail', id=plant.id) }}" class="view-btn">View Details</a>
                     </div>
                 </div>

@@ -6,17 +6,17 @@
         <form class="care-form" method="POST" novalidate>
             {{ form.hidden_tag() }}
             <fieldset>
-                <legend>Care Details</legend>
+                <legend>Care Details:</legend>
+                <div class="form-group">
+                    {{ form.care_type.label(class="form-label") }}
+                    {{ form.care_type(class="form-input") }}
+                </div>
+                <div class="form-group">
+                    {{ form.notes.label(class="form-label") }}
+                    {{ form.notes(class="form-input") }}
+                </div>
+                <div class="form-group">{{ form.submit(class="form-btn") }}</div>
             </fieldset>
-            <div class="form-group">
-                {{ form.care_type.label(class="form-label") }}
-                {{ form.care_type(class="form-input") }}
-            </div>
-            <div class="form-group">
-                {{ form.notes.label(class="form-label") }}
-                {{ form.notes(class="form-input") }}
-            </div>
-            <div class="form-group">{{ form.submit(class="form-btn") }}</div>
         </form>
     </section>
 {% endblock %}
