@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>
+            {% block title %}Plant Tracker{% endblock %}
+        </title>
+        <link href="https://fonts.googleapis.com/css2?family=Bona+Nova&display=swap"
+              rel="stylesheet">
+        <link href="{{ url_for('static', filename='styles/page.css') }}"
+              rel="stylesheet" />
+    </head>
+    <body>
+        <header>
+            <nav class="navbar">
+                <a class="project-title" href="{{ url_for("main.index") }}">Plant Tracker</a>
+                <div class="nav-links">
+                    <ul class="left-links">
+                        {% if current_user.is_authenticated %}
+                            <li>
+                                <a href="{{ url_for("main.dashboard") }}" class="nav-link">Dashboard</a>
+                            </li>
+                            <li>
+                                <a href="{{ url_for("plants.list") }}" class="nav-link">My Plants</a>
+                            </li>
+                            <li>
+                                <a href="{{ url_for("plants.new") }}" class="nav-link">Add Plant</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                    <ul class="right-links">
+                        {% if current_user.is_authenticated %}
+                            <li class="username">Hello, {{ current_user.username }}!</li>
+                            <li>
+                                <a href="{{ url_for("auth.logout") }}">Logout</a>
+                            </li>
+                        {% else %}
+                            <li>
+                                <a href="{{ url_for("auth.login") }}" class="nav-link">Login</a>
+                            </li>
+                            <li>
+                                <a href="{{ url_for("auth.register") }}" class="nav-link">Register</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <section id="flashed-messages">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, msg in messages %}<div class="alert-{{ category }}">{{ msg }}</div>{% endfor %}
+                {% endif %}
+            {% endwith %}
+        </section>
+        <main>
+            {% block content %}{% endblock %}
+        </main>
+    </body>
+</html>
