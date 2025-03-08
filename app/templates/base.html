@@ -31,7 +31,7 @@
                     </ul>
                     <ul class="right-links">
                         {% if current_user.is_authenticated %}
-                            <li class="username">Hello, {{ current_user.username }}</li>
+                            <li class="username">Hello, {{ current_user.username }}!</li>
                             <li>
                                 <a href="{{ url_for("auth.logout") }}">Logout</a>
                             </li>
