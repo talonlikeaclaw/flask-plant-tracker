@@ -1,50 +1,46 @@
 {% extends "base.html" %}
-
 {% block title %}My Plants{% endblock %}
-
 {% block content %}
-<section>
-  <h2>My Plants</h2>
-  <a href="{{ url_for('plants.new') }}">Add New Plant</a>
-</section>
-
-{% if plants %}
-<section id="plant-list">
-  {% for plant in plants %}
-    <section class="plant-details">
-      <div>
-        <p>Name:</p>
-        <p>{{ plant.name }}</p>
-      </div>
-      <div>
-        <p>Species:</p>
-        <p>{{ plant.species }}</p>
-      </div>
-      <div>
-        <p>Location:</p>
-        <p>{{ plant.location }}</p>
-      </div>
-      <div>
-        <p>Water every:</p>
-        <p>{{ plant.watering_frequency }} days</p>
-      </div>
-      <div>
-        <p>Water:</p>
-        {% if plant.needs_water %}
-          <p>Needs water!</p>
-        {% else %}
-        <p>Watered recently</p>
-        {% endif %}
-      </div>
-      <a href="{{ url_for('plants.detail', id=plant.id) }}">View Details</a>
-  </section> 
-  {% endfor %}
-</section>
+    <section class="plant-header">
+        <h2>My Plants</h2>
+        <div class="plant-actions">
+            <a href="{{ url_for("plants.new") }}" class="add-plant-btn">Add New Plant</a>
+        </div>
+    </section>
+    {% if plants %}
+        <section class="plant-container">
+            <section class="plant-list">
+                {% for plant in plants %}
+                    <div class="plant-card">
+                        <h3>{{ plant.name }}</h3>
+                        <p>
+                            <strong>Species:</strong> {{ plant.species }}
+                        </p>
+                        <p>
+                            <strong>Location:</strong> {{ plant.location }}
+                        </p>
+                        <p>
+                            <strong>Water every:</strong> {{ plant.watering_frequency }} days
+                        </p>
+                        <p>
+                            <strong>Water Status:</strong>
+                            {% if plant.needs_water %}
+                                <p class="needs-water">Needs water!</p>
+                            {% else %}
+                                <p class="watered">Watered recently</p>
+                            {% endif %}
+                        </p>
+                    </div>
+                    <a href="{{ url_for('plants.detail', id=plant.id) }}" class="view-btw">View Details</a>
+                </div>
+            {% endfor %}
+        </section>
+    </section>
 {% else %}
-<section>
-  <h3>No plants yet!</h3>
-  <p>Get started by adding your first plant.</p>
-  <a href="{{ url_for('plants.new') }}">Add Your First Plant!</a>
-</section>
+    <section class="empty-message">
+        <h3>No plants yet!</h3>
+        <p>Get started by adding your first plant.</p>
+        <a href="{{ url_for("plants.new") }}" class="add-plant-btn">Add Your First Plant!</a>
+    </section>
 {% endif %}
 {% endblock %}
