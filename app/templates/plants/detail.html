@@ -3,41 +3,46 @@
 {% block content %}
     <section class="details-container">
         <section class="plant-details">
-            <header class="plant-header">
+            <header class="details-header">
                 <h2>{{ plant.name }}</h2>
-                <div class="action-buttons">
-                    <a href="{{ url_for('plants.edit', id=plant.id) }}" class="edit-btn">Edit</a>
-                    <form method="POST" action="{{ url_for('plants.delete', id=plant.id) }}">
-                        <button type="submit" class="delete-btn">Delete</button>
-                    </form>
-                </div>
+                <section class="plant-actions">
+                    <a href="{{ url_for('plants.add_care', id=plant.id) }}" class="care-btn">Record Care</a>
+                    {% if plant.needs_water %}<p class="water-alert">This plant needs water!</p>{% endif %}
+                </section>
             </header>
             <div class="plant-info">
-                <h6>Species:</h6>
-                <p>{{ plant.species }}</p>
-                <h6>Date Acquired:</h6>
-                <p>{{ plant.date_acquired.strftime("%B %d, %Y") }}</p>
-                <h6>Location:</h6>
-                <p>{{ plant.location }}</p>
-                <h6>Watering Frequency:</h6>
-                <p>Every {{ plant.watering_frequency }} days</p>
-                <h6>Last Watered:</h6>
+                <p>
+                    <strong>Species:</strong> {{ plant.species }}
+                </p>
+                <p>
+                    <strong>Date Acquired:</strong> {{ plant.date_acquired.strftime("%B %d, %Y") }}
+                </p>
+                <p>
+                    <strong>Location:</strong> {{ plant.location }}
+                </p>
+                <p>
+                    <strong>Watering Frequency:</strong> Every {{ plant.watering_frequency }} days
+                </p>
                 {% if plant.last_watered %}
                     <p>
+                        <strong>Last Watered:</strong>
                         {{ plant.last_watered.strftime("%B %d, %Y") }}
                         {{ (now - plant.last_watered.astimezone(timezone.utc) ).days }} days ago
                     </p>
                 {% else %}
                     <p>Not recorded</p>
                 {% endif %}
-                <h6>Last Fertilized:</h6>
                 {% if plant.last_fertilized %}
                     <p>
+                        <strong>Last Fertilized:</strong>
                         {{ plant.last_fertilized.strftime("%B %d, %Y") }}
                         {{ (now - plant.last_fertilized.astimezone(timezone.utc) ).days }} days ago
                     </p>
                 {% else %}
-                    <p>Not recorded</p>
+                    <p>
+                        <strong>Last Fertilized:</strong>
+                        Not recorded
+                    </p>
                 {% endif %}
                 {% if plant.notes %}
                     <section class="plant-notes">
@@ -45,10 +50,12 @@
                         <p>{{ plant.notes|nl2br }}</p>
                     </section>
                 {% endif %}
-                <section class="plant-actions">
-                    <a href="{{ url_for('plants.add_care', id=plant.id) }}" class="care-btn">Record Care</a>
-                    {% if plant.needs_water %}<p class="water-alert">This plant needs water!</p>{% endif %}
-                </section>
+                <div class="action-buttons">
+                    <a href="{{ url_for('plants.edit', id=plant.id) }}" class="edit-btn">Edit</a>
+                    <form method="POST" action="{{ url_for('plants.delete', id=plant.id) }}">
+                        <button type="submit" class="delete-btn">Delete</button>
+                    </form>
+                </div>
             </div>
         </section>
     </section>
