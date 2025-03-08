@@ -84,9 +84,18 @@ p {
 }
 
 /* Flash Messages */
-.flash-message {
+.alert-success {
   background: #dedbd2;
-  color: #0b3948;
+  color: black;
+  padding: 10px;
+  border-radius: 5px;
+  margin: 15px 0;
+  text-align: center;
+}
+
+.alert-danger {
+  background: #edafb8;
+  color: black;
   padding: 10px;
   border-radius: 5px;
   margin: 15px 0;

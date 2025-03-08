@@ -48,7 +48,11 @@
             </nav>
         </header>
         <section id="flashed-messages">
-            {% for msg in get_flashed_messages() %}<div class="flash-message">{{ msg }}</div>{% endfor %}
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, msg in messages %}<div class="alert-{{ category }}">{{ msg }}</div>{% endfor %}
+                {% endif %}
+            {% endwith %}
         </section>
         <main>
             {% block content %}{% endblock %}
