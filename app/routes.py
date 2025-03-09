@@ -234,7 +234,7 @@ def add_care(id):
         db.session.add(care_log)
         db.session.commit()
         flash("Care recorded successfully!", "success")
-        return redirect(url_for("plants.detail", id=plant.id))
+        return redirect(url_for("main.dashboard", id=plant.id))
 
     return render_template("plants/care_form.html", form=form, plant=plant)
 

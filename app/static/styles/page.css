@@ -509,6 +509,10 @@ textarea.form-input {
 }
 
 .empty-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   font-family: "Bona Nova", Arial, sans-serif;
   color: #555;
   text-align: center;

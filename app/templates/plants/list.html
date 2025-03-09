@@ -2,10 +2,14 @@
 {% block title %}My Plants{% endblock %}
 {% block content %}
     <section class="plant-header">
-        <h1 class="plants-heading">My Plants</h1>
-        <div class="plant-actions">
-            <a href="{{ url_for("plants.new") }}" class="add-plant-btn">Add New Plant</a>
-        </div>
+        {% if plants %}
+            <h1 class="plants-heading">My Plants</h1>
+            <div class="plant-actions">
+                <a href="{{ url_for("plants.new") }}" class="add-plant-btn">Add New Plant</a>
+            </div>
+        {% else %}
+            <h1 class="plants-heading">My Plants</h1>
+        {% endif %}
     </section>
     {% if plants %}
         <section class="plant-container">
